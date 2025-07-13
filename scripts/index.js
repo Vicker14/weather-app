@@ -65,7 +65,7 @@ form.addEventListener("submit", (e) => {
     getDataObject(dataUrl)
     .then((response) => {
         temperatureDiv.textContent = `${response.temp} ºC`;
-        weatherIco = iconSet[response.icon]
+        weatherIco.src = iconSet[response.icon]
     });
 
     setTimeout(() => {
