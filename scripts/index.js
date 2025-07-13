@@ -1,11 +1,38 @@
-const container = document.querySelector('.container');
-const locationInfo = document.querySelector('#target-info')
-const form = document.querySelector('form');
-const input = document.querySelector('form input');
-const currentLocationButton = document.querySelector('.current-location');
-const changeLocationButton = document.querySelector('#change-location')
 const loadingIcon = document.querySelector('#loading-ico');
+
+const iconSet = {
+    'snow' : 'img/snow.svg',
+    'rain' : 'img/rain.svg',
+    'fog': 'img/fog.svg',
+    'wind' : 'img/wind.svg',
+    'cloudy' : 'img/cloudy.svg',
+    'partly-cloudy-day' : 'img/cloudy.svg',
+    'partly-cloudy-night': 'img/cloudy.svg',
+    'clear-day' : 'img/clear-day.svg',
+    'clear-night': 'img/clear-night.svg'
+}
+
+const container = document.querySelector('.container');
+
+const form = document.querySelector('form');
+const currentLocationButton = document.querySelector('.current-location');
+const input = document.querySelector('form input');
+
+const locationInfo = document.querySelector('#location-info');
+const temperatureDiv = document.querySelector('.temperature');
+const changeLocationButton = document.querySelector('#change-location');
+const weatherIco = document.querySelector('.weather-ico');
+
 let targetLocation;
+
+
+async function getDataObject(url) {
+    const response =  await fetch(url);
+    const data = await response.json();
+
+    console.log(data.days[0]);
+    return data.days[0];
+}
 
 currentLocationButton.addEventListener('click', () => {
     if (navigator.geolocation) {
@@ -30,9 +57,16 @@ form.addEventListener("submit", (e) => {
     container.classList.add('hidden')
     loadingIcon.classList.remove('hidden')
 
-    
+    const coordinates = input.value.split(',');
+    const latitude = coordinates[0];
+    const longitude = coordinates[1];
+    const dataUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${latitude},${longitude}?unitGroup=uk&include=days&key=XWKXRNAGYM298KKFAXBE6VYL2&contentType=json`
 
-    fetch();
+    getDataObject(dataUrl)
+    .then((response) => {
+        temperatureDiv.textContent = `${response.temp} ºC`;
+        weatherIco = iconSet[response.icon]
+    });
 
     setTimeout(() => {
         loadingIcon.classList.add('hidden')

@@ -110,6 +110,21 @@ button {
     }
 }
 
+#location-info {
+    & img {
+        filter: brightness(0) saturate(100%) invert(98%) sepia(7%) saturate(106%) hue-rotate(352deg) brightness(104%) contrast(101%);
+    }
+    & div {
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 900;
+    }
+    & button {
+        margin: 1rem 0 0 0;
+    }
+}
+
+
 .hidden {
     display: none;
 }
